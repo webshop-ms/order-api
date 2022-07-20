@@ -19,7 +19,7 @@ public class OrderFacade {
     private OrderTransformer orderTransformer;
 
     @Transactional
-    public void createOrder(OrderDto orderDto){
+    public void createOrder(OrderDto orderDto) {
         Order order = orderTransformer.dtoToEntity(orderDto);
         orderService.save(order);
     }

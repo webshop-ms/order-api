@@ -23,21 +23,20 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
         orderFacade.createOrder(orderDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrder(@RequestHeader(name = "id") String uuid){
+    public ResponseEntity<OrderDto> getOrder(@RequestHeader(name = "id") String uuid) {
         OrderDto orderDto = orderFacade.getOrder(uuid);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@RequestHeader(name = "id") String uuid){
+    public ResponseEntity<Void> deleteOrder(@RequestHeader(name = "id") String uuid) {
         orderFacade.deleteOrderByUuid(uuid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
