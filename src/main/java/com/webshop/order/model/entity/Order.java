@@ -5,7 +5,9 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Data
@@ -14,4 +16,7 @@ public class Order extends Identity {
 
     @Column(nullable = false)
     private String partnerName;
+
+    @OneToMany(mappedBy = "order")
+    private List<Item> items;
 }

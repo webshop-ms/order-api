@@ -2,11 +2,13 @@ package com.webshop.order.controller;
 
 import com.webshop.common.model.dto.OrderDto;
 import com.webshop.order.facade.OrderFacade;
+import com.webshop.order.model.request.OrderCreateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,9 +24,10 @@ public class OrderController {
         return new ResponseEntity<>(orderDtos, HttpStatus.OK);
     }
 
+    // TODO MethodArgumentNotValidException handling like in webservice udemy project
     @PostMapping
-    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
-        orderFacade.createOrder(orderDto);
+    public ResponseEntity<Void> createOrder(@RequestBody @Valid OrderCreateRequest orderCreateRequest) {
+        orderFacade.createOrder(orderCreateRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

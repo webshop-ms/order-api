@@ -3,7 +3,9 @@ package com.webshop.order.transformer;
 import com.webshop.common.model.dto.ItemDto;
 import com.webshop.common.transformer.EntityTransformer;
 import com.webshop.order.model.entity.Item;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ItemTransformer extends EntityTransformer<ItemDto, Item> {
     @Override
     public ItemDto entityToDto(Item item) {

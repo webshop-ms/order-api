@@ -1,8 +1,14 @@
 package com.webshop.order.facade;
 
+import com.webshop.common.model.dto.ItemDto;
 import com.webshop.common.model.dto.OrderDto;
+import com.webshop.order.model.entity.Item;
 import com.webshop.order.model.entity.Order;
+import com.webshop.order.model.request.OrderCreateRequest;
+import com.webshop.order.proxy.ItemProxy;
+import com.webshop.order.service.ItemService;
 import com.webshop.order.service.OrderService;
+import com.webshop.order.transformer.ItemTransformer;
 import com.webshop.order.transformer.OrderTransformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,9 +24,26 @@ public class OrderFacade {
 
     private OrderTransformer orderTransformer;
 
+    private ItemTransformer itemTransformer;
+
+    private ItemService itemService;
+
+    private ItemProxy itemProxy;
+
     @Transactional
-    public void createOrder(OrderDto orderDto) {
-        Order order = orderTransformer.dtoToEntity(orderDto);
+    public void createOrder(OrderCreateRequest orderCreateRequest) {
+        // get items from item service
+        List<ItemDto> itemDtos = itemProxy.getAllItemsById(orderCreateRequest.getItemIds());
+        // TODO catch bad request
+        if (itemDtos.isEmpty()) {
+            // TODO create new custom exception class
+            throw new RuntimeException("No such element");
+        }
+        List<Item> items = itemTransformer.dtoListToEntityList(itemDtos);
+        // create and save order
+        Order order = new Order();
+        order.setPartnerName(orderCreateRequest.getPartnerName());
+        order.setItems(items);
         orderService.save(order);
     }
 
